@@ -20,7 +20,8 @@
             <tr>
                 <td>{{ $author->id }}</td>
                 <td>{{ $author->name }}</td>
-                <td>Labot / Dzēst</td>
+                <td><a href="/authors/update/{{ $author->id }}" class="btn btn-outline-primary btn-sm">Labot</a>
+ / Dzēst</td>
             </tr>
             @endforeach
  
@@ -32,5 +33,6 @@
         <p>Nav atrasts neviens ieraksts</p>
  
     @endif
- 
+    <a href="/authors/create" class="btn btn-primary">Izveidot jaunu</a>
+    
 @endsection

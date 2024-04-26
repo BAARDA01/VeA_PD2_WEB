@@ -21,4 +21,42 @@ class AuthorController extends Controller
             ]
         );
     }
+    
+    // display new Author form
+public function create(): View
+{
+return view(
+'author.form',
+[
+'title' => 'Pievienot autoru'
+]
+);
+}
+
+// create new Author
+public function put(Request $request): RedirectResponse
+{
+$validatedData = $request->validate([
+'name' => 'required|string|max:255',
+]);
+$author = new Author();
+$author->name = $validatedData['name'];
+$author->save();
+return redirect('/authors');
+}
+
+// display Author editing form
+public function update(Author $author): View
+{
+ return view(
+ 'author.form',
+ [
+ 'title' => 'Rediģēt autoru',
+ 'author' => $author
+ ]
+ );
+}
+
+
+
 }
