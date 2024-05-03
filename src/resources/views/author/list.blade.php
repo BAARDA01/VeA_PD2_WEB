@@ -21,7 +21,11 @@
                 <td>{{ $author->id }}</td>
                 <td>{{ $author->name }}</td>
                 <td><a href="/authors/update/{{ $author->id }}" class="btn btn-outline-primary btn-sm">Labot</a>
- / Dzēst</td>
+                <form action="/authors/delete/{{ $author->id }}" method="post" class="deletion-form d-inline">
+    @csrf
+    <button type="submit" class="btn btn-outline-danger btn-sm">Dzēst</button>
+</form>
+</td>
             </tr>
             @endforeach
  

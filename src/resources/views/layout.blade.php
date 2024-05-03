@@ -51,7 +51,7 @@ data-bs-target="#navbarNav">
                 </div>
             </div>
         </footer>
-
+        <script src="/js/admin.js"></script>
     </body>
 
 </html>

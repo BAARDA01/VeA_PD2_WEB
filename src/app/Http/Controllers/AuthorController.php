@@ -30,7 +30,8 @@ public function create(): View
 return view(
 'author.form',
 [
-'title' => 'Pievienot autoru'
+'title' => 'Pievienot autoru' ,
+'author' => new Author 
 ]
 );
 }
@@ -58,7 +59,24 @@ public function update(Author $author): View
  ]
  );
 }
+//Update existing Author data
+public function patch(Author $author , Request $request): RedirectResponse
+{
+$validatedData = $request->validate([
+'name' => 'required|string|max:255',
+]);
 
+$author->name = $validatedData['name'];
+$author->save();
+return redirect('/authors');
+}
+// Delete Author
+public function delete(Author $author): RedirectResponse
+{
+ // šeit derētu pārbaude, kas neļauj dzēst autoru, ja tas piesaistīts eksistējošām grāmatām
+ $author->delete();
+ return redirect('/authors');
+}
 
 
 }
