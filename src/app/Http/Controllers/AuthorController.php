@@ -7,9 +7,20 @@ use Illuminate\View\View;
 use App\Models\Author;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
-class AuthorController extends Controller
+class AuthorController extends Controller implements HasMiddleware
 {
+/**
+* Get the middleware that should be assigned to the controller.
+*/
+public static function middleware(): array
+{
+return [
+'auth',
+];
+}
+
     // display all Authors
     public function list(): View
     {
