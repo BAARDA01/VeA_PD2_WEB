@@ -8,6 +8,7 @@ use App\Models\Book;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
+use App\Http\Requests\BookRequest;
 
 
 class BookController extends Controller implements HasMiddleware
@@ -31,6 +32,8 @@ return view(
 ]
 );
 }
+
+
 // display new Book form
 public function create(): View
 {
@@ -44,39 +47,45 @@ return view(
 ]
 );
 }
-// create new Book entry
-public function put(Request $request): RedirectResponse
+
+// validate and save Book data
+private function saveBookData(Book $book, BookRequest $request): void
 {
-$validatedData = $request->validate([
-'name' => 'required|min:3|max:256',
-'author_id' => 'required',
-'description' => 'nullable',
-'price' => 'nullable|numeric',
-'year' => 'numeric',
-'image' => 'nullable|image',
-'display' => 'nullable',
-]);
-$book = new Book();
-$book->name = $validatedData['name'];
-$book->author_id = $validatedData['author_id'];
-$book->description = $validatedData['description'];
-$book->price = $validatedData['price'];
-$book->year = $validatedData['year'];
-$book->display = (bool) ($validatedData['display'] ?? false);
-
-if ($request->hasFile('image')) {
-    $uploadedFile = $request->file('image');
-    $extension = $uploadedFile->clientExtension();
-    $name = uniqid();
-    $book->image =  $uploadedFile->storePubliclyAs(
-        '/',
-        $name . '.' . $extension,
-        'uploads'
-    );
+ $validatedData = $request->validate([
+ 'name' => 'required|min:3|max:256',
+ 'author_id' => 'required',
+ 'description' => 'nullable',
+ 'price' => 'nullable|numeric',
+ 'year' => 'numeric',
+ 'image' => 'nullable|image',
+ 'display' => 'nullable',
+ ]);
+ $validatedData = $request->validated();
+ $book->fill($validatedData);
+ $book->display = (bool) ($validatedData['display'] ?? false);
+ if ($request->hasFile('image')) {
+ $uploadedFile = $request->file('image');
+ $extension = $uploadedFile->clientExtension();
+ $name = uniqid();
+ $book->image = $uploadedFile->storePubliclyAs(
+ '/',
+ $name . '.' . $extension,
+ 'uploads'
+ );
+ }
+ $book->save();
 }
-
-$book->save();
-return redirect('/books');
+public function put(BookRequest $request): RedirectResponse
+{
+ $book = new Book();
+ $this->saveBookData($book, $request);
+ return redirect('/books');
+}
+public function patch(Book $book, BookRequest $request): RedirectResponse
+{
+ $this->saveBookData($book, $request);
+ return redirect('/books/update/' . $book->id);
+}
 }
 // display Book edit form
 public function update(Book $book): View
@@ -88,42 +97,8 @@ return view(
 'title' => 'Rediģēt grāmatu',
 'book' => $book,
 'authors' => $authors,
-
 ]
 );
-}
-// update Book data
-public function patch(Book $book, Request $request): RedirectResponse
-{
-$validatedData = $request->validate([
-'name' => 'required|min:3|max:256',
-'author_id' => 'required',
-'description' => 'nullable',
-'price' => 'nullable|numeric',
-'year' => 'numeric',
-'image' => 'nullable|image',
-'display' => 'nullable',
-]);
-$book->name = $validatedData['name'];
-$book->author_id = $validatedData['author_id'];
-$book->description = $validatedData['description'];
-$book->price = $validatedData['price'];
-$book->year = $validatedData['year'];
-$book->display = (bool) ($validatedData['display'] ?? false);
-
-if ($request->hasFile('image')) {
-    $uploadedFile = $request->file('image');
-    $extension = $uploadedFile->clientExtension();
-    $name = uniqid();
-    $book->image =  $uploadedFile->storePubliclyAs(
-        '/',
-        $name . '.' . $extension,
-        'uploads'
-    );
-}
-
-$book->save();
-return redirect('/books/update/' . $book->id);
 }
  // delete Book
  public function delete(Book $book): RedirectResponse
@@ -139,4 +114,3 @@ return redirect('/books/update/' . $book->id);
 
 
 
-}
