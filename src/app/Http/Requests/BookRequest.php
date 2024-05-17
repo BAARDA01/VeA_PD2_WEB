@@ -11,7 +11,7 @@ class BookRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,38 +22,41 @@ class BookRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|min:3|max:256',
- 'author_id' => 'required',
- 'description' => 'nullable',
- 'price' => 'nullable|numeric',
- 'year' => 'numeric',
- 'image' => 'nullable|image',
- 'display' => 'nullable',
+
+                'name' => 'required|min:3|max:256',
+                'author_id' => 'required',
+                'description' => 'nullable',
+                'price' => 'nullable|numeric',
+                'year' => 'numeric',
+                'image' => 'nullable|image',
+                'display' => 'nullable',
 
         ];
     }
+
     public function messages(): array
-{
- return [
- 'required' => 'Lauks ":attribute" ir obligāts',
- 'min' => 'Laukam ":attribute" jābūt vismaz :min simbolus garam',
- 'max' => 'Lauks ":attribute" nedrīkst būt garāks par :max simboliem',
- 'boolean' => 'Lauka ":attribute" vērtībai jābūt "true" vai "false"',
- 'unique' => 'Šāda lauka ":attribute" vērtība jau ir reģistrēta',
- 'numeric' => 'Lauka ":attribute" vērtībai jābūt skaitlim',
- 'image' => 'Laukā ":attribute" jāpievieno korekts attēla fails',
- ];
-}
-public function attributes(): array
-{
- return [
- 'name' => 'nosaukums',
- 'author_id' => 'autors',
- 'description' => 'apraksts',
- 'price' => 'cena',
- 'year' => 'gads',
- 'image' => 'attēls',
- 'display' => 'publicēt',
- ];
-}
+    {
+        return [
+            'required' => 'Lauks ":attribute" ir obligāts',
+            'min' => 'Laukam ":attribute" jābūt vismaz :min simbolus garam',
+            'max' => 'Lauks ":attribute" nedrīkst būt garāks par :max simboliem',
+            'boolean' => 'Lauka ":attribute" vērtībai jābūt "true" vai "false"',
+            'unique' => 'Šāda lauka ":attribute" vērtība jau ir reģistrēta',
+            'numeric' => 'Lauka ":attribute" vērtībai jābūt skaitlim',
+            'image' => 'Laukā ":attribute" jāpievieno korekts attēla fails',
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'name' => 'nosaukums',
+            'author_id' => 'autors',
+            'description' => 'apraksts',
+            'price' => 'cena',
+            'year' => 'gads',
+            'image' => 'attēls',
+            'display' => 'publicēt',
+        ];
+    }
 }

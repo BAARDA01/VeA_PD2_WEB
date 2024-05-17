@@ -9,21 +9,24 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Routing\Controllers\HasMiddleware;
 
+
 class AuthorController extends Controller implements HasMiddleware
 {
-/**
-* Get the middleware that should be assigned to the controller.
-*/
-public static function middleware(): array
-{
-return [
-'auth',
-];
-}
+    public static function middleware(): array
+    {
+        return [
+            'auth',
+        ];
+    }
+    //šeit tiek izmantota "middleware" - vairākos tīmekļa satvaros ir šāds mehānisms,
+    //kas ļauj veikt apstrādi visiem HTTP pieprasījumiem pirms un pēc kontrolieru metodēm
+    //šeit izmantojam iebūvēto "auth" midlevāri, kas pārbauda, vai lietotājs ir autentificēts
 
-    // display all Authors
+
+    //display all authors
     public function list(): View
     {
+
         $items = Author::orderBy('name', 'asc')->get();
 
         return view(
@@ -36,58 +39,67 @@ return [
     }
 
     // display new Author form
-public function create(): View
-{
-return view(
-'author.form',
-[
-'title' => 'Pievienot autoru' ,
-'author' => new Author 
-]
-);
-}
+    public function create(): View
+    {
+        return view(
+            'author.form',
+            [
+                'title' => 'Pievienot autoru',
+                'author' => new Author(),
 
-// create new Author
-public function put(Request $request): RedirectResponse
-{
-$validatedData = $request->validate([
-'name' => 'required|string|max:255',
-]);
-$author = new Author();
-$author->name = $validatedData['name'];
-$author->save();
-return redirect('/authors');
-}
-
-// display Author editing form
-public function update(Author $author): View
-{
- return view(
- 'author.form',
- [
- 'title' => 'Rediģēt autoru',
- 'author' => $author
- ]
- );
-}
-//Update existing Author data
-public function patch(Author $author , Request $request): RedirectResponse
-{
-$validatedData = $request->validate([
-'name' => 'required|string|max:255',
-]);
-
-$author->name = $validatedData['name'];
-$author->save();
-return redirect('/authors');
-}
-// Delete Author
-public function delete(Author $author): RedirectResponse
-{
- // šeit derētu pārbaude, kas neļauj dzēst autoru, ja tas piesaistīts eksistējošām grāmatām
- $author->delete();
- return redirect('/authors');
-}
+            ]
+        );
+    }
 
 
+    // creates new Author data
+    public function put(Request $request): RedirectResponse
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $author = new Author();
+        $author->name = $validatedData['name'];
+        $author->save();
+
+        return redirect('/authors');
+    }
+
+
+
+    // display Author edit form
+    public function update(Author $author): View
+    {
+        return view(
+            'author.form',
+            [
+                'title' => 'Rediģēt autoru',
+                'author' => $author,
+            ]
+        );
+    }
+
+    // update Author data
+    public function patch(Author $author, Request $request): RedirectResponse
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $author->name = $validatedData['name'];
+        $author->save();
+
+        return redirect('/authors');
+    }
+
+    // delete Author
+    public function delete(Author $author): RedirectResponse
+    {
+        // šeit derētu pārbaude, kas neļauj dzēst autoru, ja tas piesaistīts eksistējošām grāmatām
+        $author->delete();
+        return redirect('/authors');
+    }
+
+    
 }

@@ -1,3 +1,4 @@
+
 @extends('layout')
 
 @section('content')
@@ -11,7 +12,8 @@
     <form
         method="post"
         action="{{ $book->exists ? '/books/patch/' . $book->id : '/books/put' }}"
-        enctype="multipart/form-data">
+        enctype="multipart/form-data"
+        >
         
         @csrf
 

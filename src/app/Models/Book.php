@@ -16,12 +16,11 @@ class Book extends Model
         'description',
         'price',
         'year',
-        ];
-        
-
+    ];
+    
     public function author(): BelongsTo
-{
- return $this->belongsTo(Author::class);
-}
+    {
+        return $this->belongsTo(Author::class);
+    }
 
 }
