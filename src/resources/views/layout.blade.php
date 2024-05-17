@@ -29,9 +29,6 @@ data-bs-target="#navbarNav">
  <li class="nav-item">
  <a class="nav-link" href="/authors">Autori</a>
  </li>
- <li class="nav-item">
- <a class="nav-link" href="/filmas">Filmas</a>
-</li>
 <li class="nav-item">
  <a class="nav-link" href="/books">Grāmatas</a>
 </li>
