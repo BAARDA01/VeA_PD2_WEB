@@ -29,6 +29,9 @@ data-bs-target="#navbarNav">
  <li class="nav-item">
  <a class="nav-link" href="/authors">Autori</a>
  </li>
+ <li class="nav-item">
+ <a class="nav-link" href="/genres">Žanri</a>
+ </li>
 <li class="nav-item">
  <a class="nav-link" href="/books">Grāmatas</a>
 </li>
