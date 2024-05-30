@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\View\View;
-use App\Models\Genre;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Redirect;
+use App\Models\Genre;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 
 
@@ -18,88 +17,87 @@ class GenreController extends Controller implements HasMiddleware
             'auth',
         ];
     }
-    //šeit tiek izmantota "middleware" - vairākos tīmekļa satvaros ir šāds mehānisms,
-    //kas ļauj veikt apstrādi visiem HTTP pieprasījumiem pirms un pēc kontrolieru metodēm
-    //šeit izmantojam iebūvēto "auth" midlevāri, kas pārbauda, vai lietotājs ir autentificēts
 
 
-    //display all genres
-    public function list(): View
-    {
-
-        $items = Genre::orderBy('name', 'asc')->get();
-
-        return view(
-            'genre.list',
-            [
-                'title' => 'Autori',
-                'items' => $items,
-            ]
-        );
-    }
-
-    // display new genre form
-    public function create(): View
-    {
-        return view(
-            'genre.form',
-            [
-                'title' => 'Pievienot autoru',
-                'genre' => new Genre(),
-
-            ]
-        );
-    }
+    // display all Genres
+    public function list():View
+{
+    $items = Genre::orderBy('name', 'asc')->get();
+    $genres = Genre::orderBy('name', 'asc')->get();
+    return view(
+        'genre.list',
+        [
+            'title' => 'Žanrs',
+            'items' => $items,
+            'genres' => $genres
+        ]
+    );
+}
 
 
-    // creates new genre data
+    //display new Genre form
+    public function create():View
+{
+    $genres = Genre::all();
+    return view(
+        'genre.form',
+        [
+            'title' => 'Pievienot žanru',
+            'genre' => new Genre,
+            'genres' => $genres
+        ]
+    );
+}
+
+    // creates new Genre data
     public function put(Request $request): RedirectResponse
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
         ]);
-
-        $genre = new Genre();
-        $genre->name = $validatedData['name'];
-        $genre->save();
-
-        return redirect('/genres');
+    
+        $genres = new Genre();
+        $genres->name = $validatedData['name'];
+        $genres->save();
+    
+        return redirect('/genre');
     }
 
+    //display Genre edit form
+    public function update(Genre $genre):View
+{
+    $genres = Genre::all();
+    return view(
+        'genre.form',
+        [
+            'title' => 'Rediģēt žanru',
+            'genre' => $genre,
+            'genres' => $genres
+        ]
+    );
+}
+
+    // update Genre data
+public function patch(Genre $genre, Request $request): RedirectResponse
+{
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+    ]);
+
+    $genre->name = $validatedData['name'];
+    $genre->save();
+
+    return redirect('/genre');
+}
 
 
-    // display genre edit form
-    public function update(Genre $genre): View
-    {
-        return view(
-            'genre.form',
-            [
-                'title' => 'Rediģēt autoru',
-                'genre' => $genre,
-            ]
-        );
-    }
-
-    // update genre data
-    public function patch(Genre $genre, Request $request): RedirectResponse
-    {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
-
-        $genre->name = $validatedData['name'];
-        $genre->save();
-
-        return redirect('/genres');
-    }
-
-    // delete genre
-    public function delete(Genre $genre): RedirectResponse
+    // delete Genre
+    public function delete(Genre $genres): RedirectResponse
     {
         // šeit derētu pārbaude, kas neļauj dzēst autoru, ja tas piesaistīts eksistējošām grāmatām
-        $genre->delete();
-        return redirect('/genres');
+        $genres->delete();
+        return redirect('/genre');
     }
+  
 
-    
 }

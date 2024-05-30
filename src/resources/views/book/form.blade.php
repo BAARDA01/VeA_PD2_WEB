@@ -13,8 +13,7 @@
         method="post"
         action="{{ $book->exists ? '/books/patch/' . $book->id : '/books/put' }}"
         enctype="multipart/form-data"
-        >
-        
+    >
         @csrf
 
         <div class="mb-3">
@@ -49,9 +48,33 @@
                         >{{ $author->name }}</option>
                     @endforeach
             </select>
+            
 
             @error('author_id')
                 <p class="invalid-feedback">{{ $errors->first('author_id') }}</p>
+            @enderror
+        </div>
+
+        <div class="mb-3">
+            <label for="book-genre" class="form-label">Žanrs</label>
+
+            <select
+                id="book-genre"
+                name="genres_id"
+                class="form-select @error('genres_id') is-invalid @enderror"
+            >
+                <option value="">Norādiet žanru!</option>
+                    @foreach($genres as $genre)
+                        <option
+                            value="{{ $genre->id }}"
+                            @if ($genre->id == old('genres_id', $book->genres_id ?? false)) selected @endif
+                        >{{ $genre->name }}</option>
+                    @endforeach
+            </select>
+            
+
+            @error('genres_id')
+                <p class="invalid-feedback">{{ $errors->first('genres_id') }}</p>
             @enderror
         </div>
 
@@ -103,7 +126,6 @@
 
         <div class="mb-3">
             <label for="book-image" class="form-label">Attēls</label>
-
             @if ($book->image)
                 <img
                     src="{{ asset('images/' . $book->image) }}"
@@ -112,17 +134,18 @@
                 >
             @endif
 
-            <input
-                type="file" accept="image/png, image/jpeg, image/webp"
-                id="book-image"
-                name="image"
-                class="form-control @error('image') is-invalid @enderror"
-            >
-
+                <input
+                    type="file" accept="image/png, image/jpeg, image/webp"
+                    id="book-image"
+                    name="image"
+                    class="form-control @error('image') is-invalid @enderror"
+                >
+                
             @error('image')
-                <p class="invalid-feedback">{{ $errors->first('image') }}</p>
-            @enderror
+            <p class="invalid-feedback">{{ $errors->first('image') }}</p>
+        @enderror
         </div>
+
 
         <div class="mb-3">
             <div class="form-check">

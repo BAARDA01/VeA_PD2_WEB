@@ -17,17 +17,18 @@
             <tbody>
  
             @foreach($items as $genre)
-            <tr>
-                <td>{{ $genre->id }}</td>
-                <td>{{ $genre->name }}</td>
-                <td><a href="/genres/update/{{ $genre->id }}" class="btn btn-outline-primary btn-sm">Labot</a>
-                <form action="/genres/delete/{{ $genre->id }}" method="post" class="deletion-form d-inline">
-    @csrf
-    <button type="submit" class="btn btn-outline-danger btn-sm">Dzēst</button>
-</form>
-</td>
-            </tr>
-            @endforeach
+<tr>
+    <td>{{ $genre->id }}</td>
+    <td>{{ $genre->name }}</td>
+    <td><a href="/genre/update/{{ $genre->id }}" class="btn btn-outline-primary btn-sm">Labot</a>
+    <form action="/genre/delete/{{ $genre->id }}" method="post" class="deletion-form d-inline">
+        @csrf
+        <button type="submit" class="btn btn-outline-danger btn-sm">Dzēst</button>
+    </form>
+    </td>
+</tr>
+@endforeach
+
  
             </tbody>
         </table>
@@ -37,6 +38,6 @@
         <p>Nav atrasts neviens ieraksts</p>
  
     @endif
-    <a href="/genres/create" class="btn btn-primary">Izveidot jaunu</a>
+    <a href="/genre/create" class="btn btn-primary">Izveidot jaunu</a>
     
 @endsection

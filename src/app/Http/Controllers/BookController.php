@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BookRequest;
 use App\Models\Author;
+use App\Models\Genre;
 use App\Models\Book;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -64,18 +65,20 @@ class BookController extends Controller implements HasMiddleware
 
     // display new Book form
     public function create(): View
-    {
-        $authors = Author::orderBy('name', 'asc')->get();
+{
+    $authors = Author::orderBy('name', 'asc')->get();
+    $genres = Genre::orderBy('name', 'asc')->get();
 
-        return view(
-            'book.form',
-            [
-                'title' => 'Pievienot grāmatu',
-                'book' => new Book(),
-                'authors' => $authors,
-            ]
-        );
-    }
+    return view(
+        'book.form',
+        [
+            'title' => 'Pievienot grāmatu',
+            'book' => new Book(),
+            'authors' => $authors,
+            'genres' => $genres,
+        ]
+    );
+}
 
 
     // create new Book entry
@@ -88,18 +91,20 @@ class BookController extends Controller implements HasMiddleware
 
     // display Book edit form
     public function update(Book $book): View
-    {
-        $authors = Author::orderBy('name', 'asc')->get();
+{
+    $authors = Author::orderBy('name', 'asc')->get();
+    $genres = Genre::orderBy('name', 'asc')->get();
 
-        return view(
-            'book.form',
-            [
-                'title' => 'Rediģēt grāmatu',
-                'book' => $book,
-                'authors' => $authors,
-            ]
-        );
-    }
+    return view(
+        'book.form',
+        [
+            'title' => 'Rediģēt grāmatu',
+            'book' => $book,
+            'authors' => $authors,
+            'genres' => $genres,
+        ]
+    );
+}
 
     // update Book data
     public function patch(Book $book, BookRequest $request): RedirectResponse
