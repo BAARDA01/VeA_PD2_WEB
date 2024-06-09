@@ -60,21 +60,21 @@
 
             <select
                 id="book-genre"
-                name="genres_id"
-                class="form-select @error('genres_id') is-invalid @enderror"
+                name="genre_id"
+                class="form-select @error('genre_id') is-invalid @enderror"
             >
                 <option value="">Norādiet žanru!</option>
                     @foreach($genres as $genre)
                         <option
                             value="{{ $genre->id }}"
-                            @if ($genre->id == old('genres_id', $book->genres_id ?? false)) selected @endif
+                            @if ($genre->id == old('genre_id', $book->genre_id ?? false)) selected @endif
                         >{{ $genre->name }}</option>
                     @endforeach
             </select>
             
 
-            @error('genres_id')
-                <p class="invalid-feedback">{{ $errors->first('genres_id') }}</p>
+            @error('genre_id')
+                <p class="invalid-feedback">{{ $errors->first('genre_id') }}</p>
             @enderror
         </div>
 

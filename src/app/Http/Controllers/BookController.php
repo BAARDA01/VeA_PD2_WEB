@@ -44,6 +44,7 @@ class BookController extends Controller implements HasMiddleware
 
         $book->name = $validatedData['name'];
         $book->author_id = $validatedData['author_id'];
+        $book->genre_id = $validatedData['genre_id'];
         $book->description = $validatedData['description'];
         $book->price = $validatedData['price'];
         $book->year = $validatedData['year'];
